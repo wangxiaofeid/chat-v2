@@ -1,7 +1,7 @@
 import socketio from 'socket.io'
 
 import { addMessage } from '../server/api/messageApi'
-import { addSysLog } from '../server/api/syslogApi'
+import { addSyslog } from '../server/api/syslogApi'
 import { getTime } from '../common/base/index'
 
 
@@ -62,9 +62,9 @@ export function createSocket(server,post){
 	      socket.broadcast.emit('message',obj);
 	    }
 
-	    // addMessage(obj,function(){
-	    //   console.log("插入聊天记录成功");
-	    // });
+	    addMessage(obj,function(){
+	      console.log("插入聊天记录成功");
+	    });
 	    
 	  });
 	  // 登录
@@ -83,9 +83,9 @@ export function createSocket(server,post){
 
 	    clientList[client.id] = client;
 
-	    // addSysLog(obj,function(){
-	    //   console.log('添加登录记录成功');
-	    // });
+	    addSyslog(obj,function(){
+	      console.log('添加登录记录成功');
+	    });
 
 	    socket.broadcast.emit('system',obj);
 	    // 用户列表
@@ -113,7 +113,7 @@ export function createSocket(server,post){
 	    // 用户列表
 	    var arr = getUserList();
 
-	    // addSysLog(obj,function(){});
+	    addSyslog(obj,function(){});
 
 	    socket.broadcast.emit('users',arr);
 	    console.log('在线人数：'+getLinkNum());

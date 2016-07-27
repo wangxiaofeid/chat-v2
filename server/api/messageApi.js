@@ -1,5 +1,6 @@
 // var messages = require('../api/db').messages;
 import { messages } from '../api/db'
+import { getTime} from '../../common/base/index'
 
 /* message */
 export function getAllMessage(callback){
@@ -19,7 +20,7 @@ export function getAllMessage(callback){
 }
 
 export function addMessage(json,callback){
-    json.time = base.getTime();
+    json.time = getTime();
     // 'time': getTime(),
     // 'color': client.color,
     // 'text': data.msg,

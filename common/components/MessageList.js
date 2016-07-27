@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import $ from 'jquery'
 import QueueAnim from 'rc-queue-anim';
 
 class MessageList extends Component {
@@ -28,9 +29,14 @@ class MessageList extends Component {
       return c
   }
 
+  componentDidUpdate(){
+    setTimeout(() => $('#scroll').scrollTop(100000), 200)
+    
+  }
+
   render() {
     return (
-      <div className="oh">
+      <div className="oh" id="scroll">
         <QueueAnim component="div" type={['right', 'left']}>
             {
                 this.props.messages.map(function (message,index) {

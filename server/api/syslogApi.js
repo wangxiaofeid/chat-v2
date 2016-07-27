@@ -1,5 +1,6 @@
 // var syslog = require('../api/db').syslog;
 import { syslog } from '../api/db'
+import { getTime } from '../../common/base/index'
 
 /* syslog */
 export function getAllSyslog(callback){
@@ -21,7 +22,7 @@ export function getAllSyslog(callback){
 // module.exports.getAllSyslog = getAllSyslog;
 
 export function addSyslog(json,callback){
-    json.time = base.getTime();
+    json.time = getTime();
 
     var m = new syslog(json);
     m.save(function(err,result){
