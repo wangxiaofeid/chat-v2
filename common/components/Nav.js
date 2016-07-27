@@ -1,0 +1,44 @@
+import React, { Component, PropTypes } from 'react'
+import { Menu } from 'antd'
+import { Link } from 'react-router'
+
+class Nav extends Component {
+	constructor(props) {
+	    super(props)
+	    this.state = {
+	    	current: 'home'
+	    }
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	handleClick(e){
+		this.setState({
+	      current: e.key,
+	    });
+	}
+
+  render() {
+    return (
+      <Menu onClick={this.handleClick}
+        selectedKeys={[this.state.current]}
+        mode="horizontal"
+      >
+        <Menu.Item key="home">
+          <Link to="/">首页</Link>
+        </Menu.Item>
+        <Menu.Item key="userlist">
+          <Link to="/userlist">用户列表</Link>
+        </Menu.Item>
+        <Menu.Item key="message">
+          <Link to="/message">消息列表</Link>
+        </Menu.Item>
+       </Menu>
+    )
+  }
+}
+
+Nav.propTypes = {
+  // user: PropTypes.object.isRequired
+}
+
+export default Nav
