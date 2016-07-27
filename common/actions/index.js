@@ -9,6 +9,8 @@ export const DELETE_USER = 'DELETE_USER'
 export const ADD_USER = 'ADD_USER'
 export const LOGIN_USER = 'LOGIN_USER'
 
+export const SET_SOCKET = 'SET_SOCKET'
+
 export function set(value) {
   return {
     type: SET_COUNTER,
@@ -168,4 +170,13 @@ export function fetchLoginUser(name){
   return dispatch => {
     return dispatch(fetchLUser(name));
   }
+}
+
+
+/* socket设置 */
+export function setSocket(socket){
+    return{
+      type: SET_SOCKET,
+      socket
+    }
 }

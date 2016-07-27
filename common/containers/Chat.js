@@ -6,14 +6,14 @@ import { connect } from 'react-redux'
 import client from 'socket.io-client'
 import antd, { Row, Col, Card} from 'antd'
 
-import { fetchLoginUser } from '../actions'
+import { fetchLoginUser, setSocket} from '../actions'
 import Login from '../components/Login'
 import ChatUserList from '../components/ChatUserList'
 import MessageList from '../components/MessageList'
 import InputMessage from '../components/InputMessage'
 
 
-class UserList extends Component{
+class Chat extends Component{
 
 	constructor(props) {
 	    super(props)
@@ -27,32 +27,21 @@ class UserList extends Component{
 	    this.changeUser = this.changeUser.bind(this);
 	    this.sendMessage = this.sendMessage.bind(this);
 	    this.infoNumChange = this.infoNumChange.bind(this);
-	    this.socket = false;
-	    // this.componentWillUpdate(this.props)
-	    this.createSocket = this.createSocket.bind(this);
 	 }
 
 	componentWillUpdate(props){
-		this.createSocket(props);
-	}
-
-	componentDidMount(){
-		this.createSocket(this.props);
-	}
-
-	createSocket(props){
 	    var that = this;
-		if(props.user.id&&!that.socket){
+		if(props.user.id&&!props.user.socket){
 		    //建立websocket连接
-		    that.socket = client();
+		    var socket = client();
 		    // that.socket = io.connect('http://localhost:3000');
 		     //收到server的连接确认
-		    that.socket.on('open', function() {
-		        that.socket.emit('userLogin',props.user);
+		    socket.on('open', function() {
+		        socket.emit('userLogin',props.user);
 		    });
 
 		    //监听system事件，判断welcome或者disconnect，打印系统消息信息
-		    that.socket.on('system', function(json) {
+		    socket.on('system', function(json) {
 		        if(json.type == 'login'){
 		            antd.notification.info({
 		                message: '用户登录',
@@ -67,7 +56,7 @@ class UserList extends Component{
 		    });
 
 		    //监听message事件，打印消息信息
-		    that.socket.on('message', function(json) {
+		    socket.on('message', function(json) {
 		        console.log(json);
 		        json.messageType = "message";
 		        that.setState({
@@ -78,8 +67,8 @@ class UserList extends Component{
 		        that.infoNumChange(json);
 		    });
 
-		     // 监听用户列表
-		     that.socket.on('users', function(json) {
+		    // 监听用户列表
+		    socket.on('users', function(json) {
 		        json.unshift({name:'全部',id:'1'});
 		        var userlist = [];
 		        for (var i = 0; i < json.length; i++) {
@@ -98,6 +87,9 @@ class UserList extends Component{
 		            userlist: userlist
 		        });
 		    });
+
+		    // 数据保存到redux
+		    props.setSocket(socket);
 	    }
   	}
 
@@ -124,7 +116,7 @@ class UserList extends Component{
 		})
 	}
 	sendMessage(msg){
-		this.socket&&this.socket.emit('message',msg);
+		this.props.user.socket.emit('message',msg);
 	}
 
 	infoNumChange(json){
@@ -175,13 +167,14 @@ function mapStateToProps(state) {
     user: state.user||{
     	name: "游客",
     	color: "red",
-    	id: ""
+    	id: "",
+    	socket: false
     }
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchLoginUser}, dispatch)
+  return bindActionCreators({fetchLoginUser, setSocket}, dispatch)
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(UserList)
+export default connect(mapStateToProps,mapDispatchToProps)(Chat)
