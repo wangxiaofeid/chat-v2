@@ -1,19 +1,19 @@
 {
-  "name": "redux-universal-example",
-  "version": "0.0.0",
-  "description": "An example of a universally-rendered Redux application",
+  "name": "chat",
+  "version": "v2.0",
+  "description": "",
   "scripts": {
     "start": "node server/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactjs/redux.git"
+    "url": "https://github.com/wangxiaofeid/chat-v2"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reactjs/redux/issues"
+    "url": "https://github.com/wangxiaofeid/chat-v2/issues"
   },
-  "homepage": "http://redux.js.org",
+  "homepage": "https://github.com/wangxiaofeid/chat-v2/wiki",
   "dependencies": {
     "antd": "^1.6.1",
     "babel-polyfill": "^6.3.14",

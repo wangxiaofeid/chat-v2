@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/chat');
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function() {
-	console.log('连接成功')
+	console.log('Mongo连接成功')
 		//在这里创建你的模式和模型
 });
 
