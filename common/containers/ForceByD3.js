@@ -6,7 +6,7 @@ import fetch from 'isomorphic-fetch'
 
 import Force from '../components/Force.js'
 
-class Gangs extends Component{
+class forceByD3 extends Component{
 	constructor(props) {
         super(props);
 
@@ -65,4 +65,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Gangs)
+export default connect(mapStateToProps,mapDispatchToProps)(forceByD3)
