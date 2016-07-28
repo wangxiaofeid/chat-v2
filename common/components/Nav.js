@@ -32,7 +32,10 @@ class Nav extends Component {
         <Menu.Item key="message">
           <Link to="/message">消息列表</Link>
         </Menu.Item>
-       </Menu>
+        <Menu.Item key="gangs">
+          <Link to="/gangs">力导图</Link>
+        </Menu.Item>
+      </Menu>
     )
   }
 }

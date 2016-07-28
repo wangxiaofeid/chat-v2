@@ -70,3 +70,10 @@ p {line-height:18px;padding:2px;}
     top: -5px;
     margin-left: -13px;
 }
+
+/* d3 */
+.line{
+	stroke: #ccc;
+    stroke-width: 1;
+    cursor: pointer;
+}

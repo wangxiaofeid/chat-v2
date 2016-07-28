@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-// import { QueueAnim } from 'antd'
 import { getUserList, fetchDeleteUser, fetchAddUser } from '../actions'
 import UserTable from '../components/UserList'
 import AppendUser from '../components/AppendUser'
