@@ -94,7 +94,17 @@ export function createSocket(server,post){
 	    socket.emit('users', arr);
 	    socket.broadcast.emit('users', arr);
 	    console.log(client.name + ' login');
-	    console.log('在线人数：'+getLinkNum());
+	    console.log('在线人数：' + arr.length);
+	  })
+	  // 拉取用户
+	  socket.on('getUserlist', (id) => {
+	  	var arr = getUserList();
+	  	if(id){
+	  		clientList[id]&&clientList[id].socket.emit('users', arr);
+	  	}else{
+	  		socket.emit('users', arr);
+	    	socket.broadcast.emit('users', arr);
+	  	}
 	  })
 	  //监听出退事件
 	  socket.on('disconnect', function () {  
@@ -108,7 +118,7 @@ export function createSocket(server,post){
 
 	    // 广播用户已退出
 	    socket.broadcast.emit('system',obj);
-	    console.log(client.name + 'Disconnect');
+	    console.log(client.name + ' Disconnect');
 	    delete clientList[client.id];
 	    // 用户列表
 	    var arr = getUserList();
@@ -116,7 +126,7 @@ export function createSocket(server,post){
 	    addSyslog(obj,function(){});
 
 	    socket.broadcast.emit('users',arr);
-	    console.log('在线人数：'+getLinkNum());
+	    console.log('在线人数：' + arr.length);
 	  });
 	    
 	});

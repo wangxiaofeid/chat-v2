@@ -26,71 +26,92 @@ class Chat extends Component{
 	    this.commitName = this.commitName.bind(this);
 	    this.changeUser = this.changeUser.bind(this);
 	    this.sendMessage = this.sendMessage.bind(this);
-	    this.infoNumChange = this.infoNumChange.bind(this);
-	 }
+	    this.infoNumChange = this.infoNumChange.bind(this); 
+
+	    this.createSocket = this.createSocket.bind(this); 
+
+	    this.socket = false;
+	    if(props.user.id&&!this.socket){
+		    this.createSocket();
+	    }
+	}
+
+	componentDidMount(){
+		// // socket已存在拉取用户
+	 //    if(this.props.user.socket&&this.props.user.id){
+	 //    	this.props.user.socket.emit('getUserlist',this.props.user.id);
+	 //    }
+	}
+
+	componentWillUnmount(){
+		this.socket.destroy();
+	}
 
 	componentWillUpdate(props){
-	    var that = this;
-		if(props.user.id&&!props.user.socket){
-		    //建立websocket连接
-		    var socket = client();
-		    // that.socket = io.connect('http://localhost:3000');
-		     //收到server的连接确认
-		    socket.on('open', function() {
-		        socket.emit('userLogin',props.user);
-		    });
-
-		    //监听system事件，判断welcome或者disconnect，打印系统消息信息
-		    socket.on('system', function(json) {
-		        if(json.type == 'login'){
-		            antd.notification.info({
-		                message: '用户登录',
-		                description: 'welcome: ' + json.name
-		            })
-		        }else{
-		            antd.notification.info({
-		                message: '用户退出',
-		                description: 'goodbye: ' + json.name
-		            })
-		        }
-		    });
-
-		    //监听message事件，打印消息信息
-		    socket.on('message', function(json) {
-		        console.log(json);
-		        json.messageType = "message";
-		        that.setState({
-		            messages:that.state.messages.concat([json])
-		        });
-
-		        // all
-		        that.infoNumChange(json);
-		    });
-
-		    // 监听用户列表
-		    socket.on('users', function(json) {
-		        json.unshift({name:'全部',id:'1'});
-		        var userlist = [];
-		        for (var i = 0; i < json.length; i++) {
-		           var t = json[i];
-		           t.infoNum = 0;
-		           for (var j = 0; j < that.state.userlist.length; j++) {
-		              var ht = that.state.userlist[j];
-		              if(ht.id == t.id){
-		                t.infoNum = ht.infoNum;
-		                break;
-		              }
-		            }
-		            userlist.push(t);
-		        }
-	        	that.setState({
-		            userlist: userlist
-		        });
-		    });
-
-		    // 数据保存到redux
-		    props.setSocket(socket);
+	    
+		if(props.user.id&&!this.socket){
+		    this.createSocket();
 	    }
+  	}
+
+  	createSocket(){
+  		var that = this;
+  		//建立websocket连接
+	    var socket = client();
+	    this.socket = socket;
+  		//收到server的连接确认
+	    socket.on('open', function() {
+	        socket.emit('userLogin',that.props.user);
+	    });
+
+	    //监听system事件，判断welcome或者disconnect，打印系统消息信息
+	    socket.on('system', function(json) {
+	        if(json.type == 'login'){
+	            antd.notification.info({
+	                message: '用户登录',
+	                description: 'welcome: ' + json.name
+	            })
+	        }else{
+	            antd.notification.info({
+	                message: '用户退出',
+	                description: 'goodbye: ' + json.name
+	            })
+	        }
+	    });
+
+	    //监听message事件，打印消息信息
+	    socket.on('message', function(json) {
+	        console.log(json);
+	        json.messageType = "message";
+	        that.setState({
+	            messages:that.state.messages.concat([json])
+	        });
+
+	        // all
+	        that.infoNumChange(json);
+	    });
+
+	    // 监听用户列表
+	    // socket.off()
+	    socket.on('users', function(json) {
+	        json.unshift({name:'全部',id:'1'});
+	        var userlist = [];
+	        for (var i = 0; i < json.length; i++) {
+	           var t = json[i];
+	           t.infoNum = 0;
+	           for (var j = 0; j < that.state.userlist.length; j++) {
+	              var ht = that.state.userlist[j];
+	              if(ht.id == t.id){
+	                t.infoNum = ht.infoNum;
+	                break;
+	              }
+	            }
+	            userlist.push(t);
+	        }
+        	that.setState({
+	            userlist
+	        });
+	    });
   	}
 
 	commitName(value){
@@ -116,7 +137,7 @@ class Chat extends Component{
 		})
 	}
 	sendMessage(msg){
-		this.props.user.socket.emit('message',msg);
+		this.socket.emit('message',msg);
 	}
 
 	infoNumChange(json){
