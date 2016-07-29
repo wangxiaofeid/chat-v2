@@ -22,7 +22,7 @@ const chartConfig = {
         bottom: 0
     },
     zoom: true,
-    drop: true
+    drag: true
 };
 
 export default class Force extends D3Base {
@@ -59,7 +59,7 @@ export default class Force extends D3Base {
             .attr("width", width)
             .attr("height", height)
             .append("g")
-                .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
+            .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
 
         this.svgg = this.svg.append("svg:g").attr('class','outg');
         this.svgline = this.svgg.append("svg:g").attr('class','lines');
@@ -84,7 +84,7 @@ export default class Force extends D3Base {
             that.svg_nodes.attr('transform',function(d){ return `translate(${d.x}, ${d.y})`});
         });
 
-        if(this.drop){
+        if(this.drag){
             that.force.drag()
                 .on("dragstart",function(d,i){
                     d3.event.sourceEvent.stopPropagation();
@@ -105,7 +105,7 @@ export default class Force extends D3Base {
                         .on('zoomend', function(){
                         });
         
-            that.svg.call(zoomObj);
+            this.svgg.call(zoomObj);
         }
 
         this.drew();
