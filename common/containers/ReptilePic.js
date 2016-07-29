@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getUserList, fetchDeleteUser, fetchAddUser } from '../actions'
-import UserTable from '../components/UserList'
+import ImageList from '../components/ImageList'
 
 class ReptilePic extends Component{
 	constructor(props) {
 	    super(props)
 	    this.state = {
-	      current: '1',
+	      	imgList: []
 	    }
 	    this.menuHandleClick = this.menuHandleClick.bind(this);
 	}
@@ -17,7 +17,7 @@ class ReptilePic extends Component{
 		
 		return(
 			<div>
-				
+				<ImageList imgList={this.state.imgList}/>
 			</div>
 		)
 	}

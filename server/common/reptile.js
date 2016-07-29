@@ -14,7 +14,7 @@ export default class reptile {
         this.maxNum = maxNum||100;
 
         if(url&&this.isLink(url)){
-            this.getData(url);
+            this.getData(url, 1);
         }else{
             this.responseError('请提供正确的网页地址')
         }
@@ -24,7 +24,7 @@ export default class reptile {
         return this.regex.test(str)
     }
 
-    getData(link){
+    getData(link, index){
         var that = this;
         that.linkNum++;
         request(link, function (error, response, body) {
@@ -40,7 +40,11 @@ export default class reptile {
                 var arr = [];
                 $('img').each(function(){
                     var img = $(this).attr('src');
-                    img&&that.back.push(url.resolve(link, img));
+                    img&&that.back.push({
+                        from: link,
+                        img: url.resolve(link, img),
+                        index: index
+                    });
                 });
 
                 $('a').each(function(){
@@ -53,7 +57,7 @@ export default class reptile {
             }else{
                 _.each(aArr,function(link){
                     // console.log(link)
-                    link&&that.isLink(link)&&that.getData(link);
+                    link&&that.isLink(link)&&that.getData(link, index + 1);
                 });
             }
         })
