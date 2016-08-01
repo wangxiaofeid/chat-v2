@@ -1,47 +1,68 @@
 import React, { Component, PropTypes } from 'react'
 import { Table, Icon } from 'antd';
-import { dataFormat } from '../base/index';
 
 class ImageList extends Component {
+  constructor(props) {
+      super(props)
+      this.state = {
+          show: 'none',
+          img: ""
+      }
+    this.showPic = this.showPic.bind(this);
+    this.hidePic = this.hidePic.bind(this);
+  }
+
+  showPic(img){
+    this.setState({
+      show: 'block',
+      img
+    });
+  }
+
+  hidePic(){
+    this.setState({
+      show: 'none'
+    });
+  }
 
   render() {
-    const { userlist , onDelete } = this.props;
+    const { imgList } = this.props;
     const columns = [{
-      title: 'id',
-      dataIndex: 'id',
-      key: 'id',
-      render: (text) => <a href="#">{text}</a>,
+      title: '几层查找',
+      dataIndex: 'index',
+      key: 'index',
     },{
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a href="#">{text}</a>,
-    }, {
-      title: '颜色',
-      dataIndex: 'color',
-      key: 'color',
-    }, {
-      title: '注册时间',
-      dataIndex: 'registered',
-      key: 'registered',
-      render: (text) => (dataFormat(text,'yyyy-MM-dd hh:mm:ss'))
-    }, {
+      title: '来自网址',
+      dataIndex: 'from',
+      key: 'from',
+      // render: (link) => <a href={ link }>{link}</a>,
+    },{
+      title: '图片',
+      dataIndex: 'img',
+      key: 'img',
+      // render: (img) => <a href="#"><img src={ img }/></a>,
+    },{
+      title: '缩略图',
+      dataIndex: 'img',
+      key: 'imgM',
+      render: (img) => <img style={{ width:"40px",height:'40px'}} src={ img } onClick={this.showPic.bind(this,img)}/>,
+    },{
       title: '操作',
       key: 'operation',
       render: (text,record) => (
         <span>
-          <a href="#">操作一{record.name}</a>
-          <span className="ant-divider"></span>
-          <a href="javascript:;" onClick={() => onDelete(record.id)}>删除</a>
-          <span className="ant-divider"></span>
-          <a href="#" className="ant-dropdown-link">
-            更多 <Icon type="down" />
-          </a>
+          <a href="javascript:;" onClick={this.showPic.bind(this,record.img)}>查看大图</a>
         </span>
       ),
     }];
     return (
-      <Table columns={columns} dataSource={userlist} />
+      <div>
+        <Table columns={columns} dataSource={imgList} />
+        <div className="showPic" style={{display: this.state.show}}>
+          <div className="cover" onClick={this.hidePic}></div>
+          <img src={this.state.img} alt=""/>
+        </div>
+      </div>
     )
   }
 }
@@ -49,7 +70,7 @@ class ImageList extends Component {
 // { "_id" : ObjectId("5756874df92420a87cc6999f"), "time" : 1465288525389, "color" : "pink", "name" : "王小飞", "id" : 9201, "type" : "disconnect" }
 
 ImageList.propTypes = {
-  userlist: PropTypes.array.isRequired,
+  imgList: PropTypes.array.isRequired,
   // onDelete: PropTypes.func.isRequired
 }
 

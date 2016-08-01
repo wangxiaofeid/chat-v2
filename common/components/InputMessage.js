@@ -13,11 +13,12 @@ class InputMessage extends Component {
 
   handleOk() {
     if(this.state.value){
-      this.props.onSubmitMsg({
-        toId:this.props.toId,
-        toName:this.props.toName,
-        msg:this.state.value
-      });
+      // this.props.onSubmitMsg({
+      //   toId:this.props.toId,
+      //   toName:this.props.toName,
+      //   msg:this.state.value
+      // });
+      this.props.onSubmitMsg(this.state.value);
       this.setState({ value: "" });
     }
   }

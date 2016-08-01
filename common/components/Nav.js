@@ -36,7 +36,7 @@ class Nav extends Component {
           <Link to="/forceByD3">力导图</Link>
         </Menu.Item>
         <Menu.Item key="reptile">
-          <Link to="/reptile">力导图</Link>
+          <Link to="/reptile">抓图</Link>
         </Menu.Item>
       </Menu>
     )

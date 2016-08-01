@@ -11,7 +11,7 @@ export default class reptile {
         this.back = [];
         this.linkNum = 0;
         this.isResponse = false;
-        this.maxNum = maxNum||100;
+        this.maxNum = maxNum||30;
 
         if(url&&this.isLink(url)){
             this.getData(url, 1);
@@ -37,15 +37,19 @@ export default class reptile {
                 // console.log(body);
 
                 var $ = cheerio.load(body);
-                var arr = [];
                 $('img').each(function(){
                     var img = $(this).attr('src');
-                    img&&that.back.push({
-                        from: link,
-                        img: url.resolve(link, img),
-                        index: index
-                    });
+                    if(img&&!_.find(that.back, function(chr) {
+                            return chr.img == url.resolve(link, img);
+                        })){
+                        that.back.push({
+                            from: link,
+                            img: url.resolve(link, img),
+                            index: index
+                        });
+                    }
                 });
+
 
                 $('a').each(function(){
                     var aLink = $(this).attr('href');

@@ -137,7 +137,11 @@ class Chat extends Component{
 		})
 	}
 	sendMessage(msg){
-		this.socket.emit('message',msg);
+		this.socket.emit('message',{
+			  toId: this.state.chatList.id,
+			  toName: this.state.chatList.name,
+			  msg
+		});
 	}
 
 	infoNumChange(json){
@@ -172,7 +176,7 @@ class Chat extends Component{
                       	<Card title={this.props.user.name + '-to-' + this.state.chatList.name}>
                             <MessageList myName={this.props.user.name} myId={this.props.user.id} toName={this.state.chatList.name} toId={this.state.chatList.id} messages={this.state.messages}>
                             </MessageList>
-                            <InputMessage toId={this.state.chatList.id} toName={this.state.chatList.name} onSubmitMsg={this.sendMessage}/>
+                            <InputMessage onSubmitMsg={this.sendMessage}/>
                         </Card>
                       </Col>
                     </Row>
