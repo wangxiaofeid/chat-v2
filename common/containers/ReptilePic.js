@@ -26,7 +26,7 @@ class ReptilePic extends Component{
 	}
 
 	setLink(link){
-		if(this.isLink(link)&&link != this.state.link) {
+		if(this.isLink(link)) {
 			this.setState({
 				imgList: [],
 				link
@@ -60,7 +60,9 @@ class ReptilePic extends Component{
 			<div>
 				<div style={{marginBottom:'20px'}}>
 					<InputNumber min={1} max={10000} defaultValue={30} onChange={this.handleInputChange}/>
-					<div style={{display:'inline-block',marginLeft:'10px'}}><InputMessage onSubmitMsg={this.setLink}/></div>
+					<div style={{display:'inline-block',marginLeft:'10px'}}>
+						<InputMessage onSubmitMsg={this.setLink} save={true}/>
+					</div>
 				</div>
 				<ImageList imgList={this.state.imgList}/>
 			</div>

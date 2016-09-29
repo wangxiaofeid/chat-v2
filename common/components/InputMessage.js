@@ -19,7 +19,7 @@ class InputMessage extends Component {
       //   msg:this.state.value
       // });
       this.props.onSubmitMsg(this.state.value);
-      this.setState({ value: "" });
+      !this.props.save&&this.setState({ value: "" });
     }
   }
 
@@ -46,6 +46,7 @@ InputMessage.propTypes = {
   // incrementIfOdd: PropTypes.func.isRequired,
   // incrementAsync: PropTypes.func.isRequired,
   onSubmitMsg: PropTypes.func.isRequired,
+  save: PropTypes.bool
   // login: PropTypes.bool.isRequired
 }
 

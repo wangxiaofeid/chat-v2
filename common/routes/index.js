@@ -5,6 +5,7 @@ import UserList from '../containers/UsersList'
 import Message from '../containers/Message'
 import ForceByD3 from '../containers/ForceByD3'
 import ReptilePic from '../containers/ReptilePic'
+import FileUpload from '../containers/FileUpload'
 
 export default (
   <Route path="/" component={App}>
@@ -12,5 +13,6 @@ export default (
     <Route path="/Message" component={Message} />
     <Route path="/forceByD3" component={ForceByD3} />
     <Route path="/reptile" component={ReptilePic} />
+    <Route path="/fileUpload" component={FileUpload} />
   </Route>
 )
