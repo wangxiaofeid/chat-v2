@@ -1,5 +1,6 @@
 // var users = require('../api/db').users;
 // var base = require('../base');
+import formidable from 'formidable'
 import { users } from '../api/db'
 import { getTime, getColor, getId } from '../../common/base/index'
 
@@ -128,6 +129,28 @@ export function fun(app){
         msg: "用户名不能为空"
       });
     }
+  });
+
+  app.post('/user/save', function(req,res){
+    var form = new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files) {
+      console.log(JSON.stringify(fields));
+      console.log(JSON.stringify(files));
+      if(fields&&fields.username){
+        addUser({
+          "name": fields.username
+        },function(result) {
+          res.json(result);
+        })
+      }else{
+        res.json({
+          type: 0,
+          msg: "用户名不能为空"
+        });
+      }
+    })
+    
   });
 
   app.get('/user/delete',function(req,res){

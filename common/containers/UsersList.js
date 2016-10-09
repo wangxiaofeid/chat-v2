@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import $ from 'jquery'
 import { getUserList, fetchDeleteUser, fetchAddUser } from '../actions'
 import UserTable from '../components/UserList'
 import AppendUser from '../components/AppendUser'
@@ -11,11 +12,26 @@ class UserList extends Component{
 		getUserList();
 	}
 
+	saveUser(name){
+		$.ajax({
+			type: 'POST',
+		  	url: '/user/save',
+		  	data: {
+		  		username: name
+		  	},
+		  	success: function(data){
+		  		console.log(data);
+		  	}	
+		});
+	}
+
 	render(){
 		const {userlist, fetchDeleteUser, fetchAddUser} = this.props;
 		return(
 			<div>
-				<AppendUser onSubmitFun = {fetchAddUser}/>
+				get:<AppendUser onSubmitFun = {fetchAddUser}/>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				post:<AppendUser onSubmitFun = {this.saveUser}/>
 				<UserTable userlist={userlist} onDelete={fetchDeleteUser}>
 				</UserTable>
 			</div>

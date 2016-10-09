@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { Upload, Button, Icon, message } from 'antd'
+import { Upload, Button, Icon, message, Input } from 'antd'
 
 const props = {
   action: 'api/upload',
@@ -18,15 +18,29 @@ const props = {
   },
   onChange(data) {
     console.log(data);
+  },
+  data: {
+    username: 'wxf'
   }
 }
 
 class FileUpload extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      userName: "",
+      password: ""
+    }
     // console.log(this.props.params);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleSubmit(){
+
+  }
+
   render() {
+    
     return (
       <div>
         
@@ -37,6 +51,9 @@ class FileUpload extends Component {
             <Icon type="upload" /> upload
           </Button>
         </Upload>
+
+        <hr/>
+
       </div>
     )
   }
