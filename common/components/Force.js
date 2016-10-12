@@ -13,7 +13,7 @@ const chartConfig = {
         })(),
     zoomRange:[0.2, 4],
     zoomScale:[0.9,1.1],
-    width: 800,
+    width: 1500,
     height: 600,
     margin: {
         left: 0,
@@ -70,8 +70,8 @@ export default class Force extends D3Base {
         this.force = d3.layout.force()
             .nodes(this.nodes)
             .links(this.links)
-            .linkDistance(150)
-            .charge(-600)
+            .linkDistance(60)
+            .charge(-400)
             .size([width, height]);
 
         this.force.on("tick", function(e){    //对于每一个时间间隔
@@ -123,7 +123,7 @@ export default class Force extends D3Base {
         var that = this;
         this.nodes.length = 0;
         this.links.length = 0;
-        Object.assign(this.nodes,data.nodes);
+        Object.assign(this.nodes, data.nodes);
         _.each(data.links,function(obj){
             var source = that.nodes.find(function(n){ return n.name == obj.source});
             var target = that.nodes.find(function(n){ return n.name == obj.target});
@@ -132,7 +132,7 @@ export default class Force extends D3Base {
                     source: source,
                     target: target
                 });
-            } 
+            }
         });
     }
 
