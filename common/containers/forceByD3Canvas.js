@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import fetch from 'isomorphic-fetch'
-import d3 from "d3";
+import d3 from "d3-old";
 import _ from "lodash";
 
 import Force from '../components/Force.js'
@@ -48,6 +48,16 @@ class forceByD3Svg extends Component{
             self.setState({'update': self.state.update + 1});
             self.drew();
         });
+
+        // d3.select(this.refs.canvas)
+        //   .call(self.force.drag()
+        //     .container(this.refs.canvas)
+        //     .subject(function() {
+        //         return simulation.find(d3.event.x, d3.event.y);
+        //     })
+        //     .on("start", function(){})
+        //     .on("drag", function(){})
+        //     .on("end", function(){}));
     }
 
     componentDidUpdate() {
@@ -100,8 +110,8 @@ class forceByD3Svg extends Component{
 
         ctx.beginPath();
         ctx.lineWidth = 1;
+        ctx.strokeStyle = "#ccc";
         self.links.forEach(function(d){
-            ctx.strokeStyle = "#ccc";
             ctx.moveTo(d.source.x, d.source.y);
             ctx.lineTo(d.target.x, d.target.y);
         });

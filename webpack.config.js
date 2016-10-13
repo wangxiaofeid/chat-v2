@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var BowerWebpackPlugin = require("bower-webpack-plugin");
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -14,8 +15,16 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ResolverPlugin(
+        new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
+      )
   ],
+  resolve: {
+    root: [
+      path.join(__dirname, "bower_components")
+    ]
+  },
   module: {
     loaders: [
       {

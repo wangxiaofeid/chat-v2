@@ -1,0 +1,21 @@
+{
+  "name": "chat-v2",
+  "description": "null",
+  "main": "index.js",
+  "authors": [
+    "xiaofei.wang <xiaofei.wang@tongdun.cn>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/wangxiaofeid/chat-v2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "^4.2.7",
+    "d3-old": "d3#3.5.5"
+  }
+}

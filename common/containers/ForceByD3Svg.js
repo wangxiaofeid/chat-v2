@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import fetch from 'isomorphic-fetch'
-import d3 from "d3";
+import d3 from "d3-old";
 import _ from "lodash";
 
 import '../css/force.css'

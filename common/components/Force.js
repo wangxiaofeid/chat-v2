@@ -1,4 +1,4 @@
-import d3 from "d3";
+import d3 from "d3-old";
 import _ from "lodash";
 import D3Base from "./D3Base";
 
