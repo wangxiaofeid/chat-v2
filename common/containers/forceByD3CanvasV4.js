@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import fetch from 'isomorphic-fetch'
-import d3 from "d3-old";
+// import d3, { schemeCategory20, schemeCategory20b, schemeCategory20c, forceSimulation, select, event, forceLink, forceManyBody, forceCenter} from "d3";
+import * as d3 from 'd3'
 import _ from "lodash";
 
 import Force from '../components/Force.js'
@@ -10,17 +11,17 @@ import '../css/force.css'
 class forceByD3Svg extends Component{
 	constructor(props) {
         super(props);
-
+        console.log(d3.schemeCategory20);
         this.state = {
             width: 1400,
             height: 600,
             update: 0,
             color: (function(){
-                var arr = [d3.scale.category20(),d3.scale.category20b(),d3.scale.category20c(),d3.scale.category20(),d3.scale.category20b(),d3.scale.category20c()];
+                var arr = [d3.schemeCategory20, d3.schemeCategory20b, d3.schemeCategory20c, d3.schemeCategory20, d3.schemeCategory20b, d3.schemeCategory20c];
                 return function(key){
                     var num = parseInt(key);
                     // console.log(num,arr[Math.floor(num/20)](num%20));
-                    return arr[Math.floor(num/20)](num%20);
+                    return arr[Math.floor(num/20)][num%20];
                 }
             })(),
         }
@@ -31,11 +32,7 @@ class forceByD3Svg extends Component{
 
 	componentDidMount() {
         var self = this;
-        // el = findDOMNode(this);
-
-        // this.chart = new Force(el, {});
-
-        // this.chart.create(this.state.data);
+        /*
         this.force = d3.layout.force()
             .nodes(this.nodes)
             .links(this.links)
@@ -45,19 +42,51 @@ class forceByD3Svg extends Component{
             .start();
 
         this.force.on("tick", function(e){
-            // self.setState({'update': self.state.update + 1});
+            self.setState({'update': self.state.update + 1});
             self.drew();
         });
+        */
 
-        // d3.select(this.refs.canvas)
-        //   .call(self.force.drag()
-        //     .container(this.refs.canvas)
-        //     .subject(function() {
-        //         return simulation.find(d3.event.x, d3.event.y);
-        //     })
-        //     .on("start", function(){})
-        //     .on("drag", function(){})
-        //     .on("end", function(){}));
+        self.force = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(self.state.width / 2, self.state.height / 2));
+        
+        self.force.nodes(this.nodes)
+                .on("tick", function(){
+                    self.drew()
+                });
+
+        self.force.force("link")
+                .links(self.links);
+
+        
+        d3.select(self.refs.canvas).call(d3.drag()
+              .container(self.refs.canvas)
+              .subject(function() {
+                return self.find(d3.event.x, d3.event.y);
+              })
+              .on("start", dragstarted)
+              .on("drag", dragged)
+              .on("end", dragended));
+
+
+        function dragstarted() {
+          if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+          d3.event.subject.fx = d3.event.subject.x;
+          d3.event.subject.fy = d3.event.subject.y;
+        }
+
+        function dragged() {
+          d3.event.subject.fx = d3.event.x;
+          d3.event.subject.fy = d3.event.y;
+        }
+
+        function dragended() {
+          if (!d3.event.active) simulation.alphaTarget(0);
+          d3.event.subject.fx = null;
+          d3.event.subject.fy = null;
+        }
     }
 
     componentDidUpdate() {
@@ -99,7 +128,7 @@ class forceByD3Svg extends Component{
                 });
             }
         });
-        this.force.start();
+        this.force.restart ();
     }
 
     drew(){
