@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Checkbox } from 'antd'
 
 class Counter extends Component {
   render() {
@@ -14,6 +15,7 @@ class Counter extends Component {
         <button onClick={incrementIfOdd}>Increment if odd</button>
         {' '}
         <button onClick={() => incrementAsync()}>Increment async</button>
+        <Checkbox></Checkbox>
       </p>
     )
   }

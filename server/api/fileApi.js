@@ -3,7 +3,7 @@ import fs from 'fs'
 
 export function fun(app){
 	// file upload
-	app.post('/api/upload', function(req,res){
+	app.post('/file/upload', function(req,res){
 		console.log('开始上传');
 
 		console.log(req.body);

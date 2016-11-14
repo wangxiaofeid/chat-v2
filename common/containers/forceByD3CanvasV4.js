@@ -16,63 +16,49 @@ class forceByD3Svg extends Component{
             width: 1400,
             height: 600,
             update: 0,
-            color: (function(){
-                var arr = [d3.schemeCategory20, d3.schemeCategory20b, d3.schemeCategory20c, d3.schemeCategory20, d3.schemeCategory20b, d3.schemeCategory20c];
-                return function(key){
-                    var num = parseInt(key);
-                    // console.log(num,arr[Math.floor(num/20)](num%20));
-                    return arr[Math.floor(num/20)][num%20];
-                }
-            })(),
+            color: d3.scaleOrdinal(d3.schemeCategory20),
         }
         this.nodes = [];
         this.links = [];
+        this.transform = {
+            x: 0,
+            y: 0,
+            k: 1
+        }
         this.getData();
+
+        this.start = this.start.bind(this);
     }
 
-	componentDidMount() {
+	start() {
         var self = this;
-        /*
-        this.force = d3.layout.force()
-            .nodes(this.nodes)
-            .links(this.links)
-            .linkDistance(60)
-            .charge(-400)
-            .size([this.state.width, this.state.height])
-            .start();
 
-        this.force.on("tick", function(e){
-            self.setState({'update': self.state.update + 1});
-            self.drew();
-        });
-        */
-
-        self.force = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+        self.force = d3.forceSimulation(self.nodes)
+            .force("link", d3.forceLink(self.links).id(function(d) { return d.name; }))
             .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(self.state.width / 2, self.state.height / 2));
-        
-        self.force.nodes(this.nodes)
-                .on("tick", function(){
-                    self.drew()
-                });
-
-        self.force.force("link")
-                .links(self.links);
-
-        
+            .force("center", d3.forceCenter(self.state.width / 2, self.state.height / 2))
+            .on("tick", function(){
+                self.drew()
+            })
+        // drag
         d3.select(self.refs.canvas).call(d3.drag()
               .container(self.refs.canvas)
               .subject(function() {
-                return self.find(d3.event.x, d3.event.y);
+                var node = self.force.find(d3.event.x, d3.event.y);
+                var length = Math.sqrt((node.x - d3.event.x)*(node.x - d3.event.x) + (node.y - d3.event.y)*(node.y - d3.event.y));
+                console.log(length);
+                if(length > 5){
+                    return undefined
+                }else{
+                    return node
+                }
               })
               .on("start", dragstarted)
               .on("drag", dragged)
               .on("end", dragended));
 
-
         function dragstarted() {
-          if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+          if (!d3.event.active) self.force.alphaTarget(0.3).restart();
           d3.event.subject.fx = d3.event.subject.x;
           d3.event.subject.fy = d3.event.subject.y;
         }
@@ -83,10 +69,20 @@ class forceByD3Svg extends Component{
         }
 
         function dragended() {
-          if (!d3.event.active) simulation.alphaTarget(0);
+          if (!d3.event.active) self.force.alphaTarget(0);
           d3.event.subject.fx = null;
           d3.event.subject.fy = null;
         }
+        // zoom
+        d3.select(self.refs.canvas).call(d3.zoom()
+            .scaleExtent([0.3,2])
+            .on("zoom", function(){
+                var transform = d3.zoomTransform(this);
+                // console.log(transform)
+                self.transform = transform
+                self.drew();
+            }));
+        
     }
 
     componentDidUpdate() {
@@ -114,28 +110,28 @@ class forceByD3Svg extends Component{
         this.nodes.length = 0;
         this.links.length = 0;
         Object.assign(self.nodes, data.nodes);
-        _.each(data.nodes, function(obj){
-            obj.x = self.state.width/2;
-            obj.y = self.state.height/2;
-        });
-        _.each(data.edges, function(obj){
-            var source = self.nodes.find(function(n){ return n.name == obj.source});
-            var target = self.nodes.find(function(n){ return n.name == obj.target});
-            if(source&&target){
-                self.links.push({
-                    source: source,
-                    target: target
-                });
-            }
-        });
-        this.force.restart ();
+        Object.assign(self.links, data.edges);
+        this.start();
+    }
+
+    zoom(transform){
+        var self = this;
+
+        var ctx = self.refs.canvas.getContext('2d');
+
+        ctx.translate(transform.x, transform.y);
+        ctx.scale(transform.k, transform.k);
     }
 
     drew(){
         var self = this;
 
         var ctx = self.refs.canvas.getContext('2d');
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, 100000, 100000);
+        ctx.translate(self.transform.x, self.transform.y);
+        ctx.scale(self.transform.k, self.transform.k);
 
         ctx.beginPath();
         ctx.lineWidth = 1;
