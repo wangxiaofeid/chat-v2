@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { Form, Input, Button, Icon} from 'antd';
+import { Form, Input, Button, Icon, Upload} from 'antd';
 const FormItem = Form.Item;
 import ajaxUploader from '../lib/ajaxUploader'
 
@@ -20,6 +20,9 @@ const props = {
   },
   onChange(data) {
     console.log(data);
+  },
+  customRequest(obj){
+    console.log(obj);
   }
 }
 
@@ -72,13 +75,14 @@ class FileUpload extends Component {
               <Input placeholder="Please input the account" />
             )}
           </FormItem>
-          <FormItem label="上传文件（自己）">
-              {getFieldDecorator('file')(
-              <Input type="file" />
-              )}
+          <FormItem label="上传文件（customRequest）">
+            <Upload {...props}>
+              <Button type="ghost">
+                <Icon type="upload" /> upload
+              </Button>
+            </Upload>
           </FormItem>
           <Button type="primary" htmlType="submit">Submit</Button>
-
         </Form>
       </div>
     )

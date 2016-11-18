@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { Upload, Button, Icon, message, Input } from 'antd'
 
 const props = {
-  action: 'api/upload',
+  action: '/file/upload',
   multiple: false,
   beforeUpload(file) {
     // const isJPG = file.type === 'image/jpeg';
@@ -20,7 +20,8 @@ const props = {
     console.log(data);
   },
   data: {
-    username: 'wxf'
+    username: 'wxf',
+    password: 'wxfwxf'
   }
 }
 

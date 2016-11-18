@@ -6,8 +6,6 @@ export function fun(app){
 	app.post('/file/upload', function(req,res){
 		console.log('开始上传');
 
-		console.log(req.body);
-
 		var form = new formidable.IncomingForm();   //创建上传表单
 		    form.encoding = 'utf-8';		//设置编辑
 		    form.uploadDir = 'static/';	 //设置上传目录

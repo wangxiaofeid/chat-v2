@@ -11,6 +11,7 @@ import forceByD3CanvasV4 from '../containers/forceByD3CanvasV4'
 import ReptilePic from '../containers/ReptilePic'
 import FileUpload from '../containers/FileUpload'
 import FileUpload2 from '../containers/FileUpload2'
+import FileUpload3 from '../containers/FileUpload3'
 
 export default (
   <Route path="/" component={App}>
@@ -24,6 +25,7 @@ export default (
     <Route path="/reptile" component={ReptilePic} />
     <Route path="/fileUpload" component={FileUpload} />
     <Route path="/fileUpload2" component={FileUpload2} />
+    <Route path="/fileUpload3" component={FileUpload3} />
     <Route path="*" component={App} />
   </Route>
 )

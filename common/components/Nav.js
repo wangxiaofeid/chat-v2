@@ -56,6 +56,9 @@ class Nav extends Component {
         <Menu.Item key="fileUpload2">
           <Link to="/fileUpload2">传图2</Link>
         </Menu.Item>
+        <Menu.Item key="fileUpload3">
+          <Link to="/fileUpload3">传图3</Link>
+        </Menu.Item>
       </Menu>
     )
   }

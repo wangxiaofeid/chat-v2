@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/wangxiaofeid/chat-v2/wiki",
   "dependencies": {
-    "antd": "^2.0.1",
+    "antd": "^2.4.3",
     "babel-polyfill": "^6.3.14",
     "babel-register": "^6.4.3",
     "body-parser": "^1.15.2",
