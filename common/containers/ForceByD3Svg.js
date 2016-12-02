@@ -111,7 +111,19 @@ class forceByD3Svg extends Component{
                         this.nodes.map(function(node,index){
                             var radius = Math.min(node.score + 3, 30);
                             radius = radius < 15 ? radius : (radius - 4);
+                            {/*
                             return (<g className="node" key={index} transform={'translate('+(node.x||defaultWidth)+','+(node.y||defaultHeight)+')'}><circle r={radius} style={{fill: this.state.color(node.category) }}></circle></g>)
+                            }.bind(this))
+                            */
+                            }
+                            return (<g className="node" key={index} transform={'translate('+(node.x||defaultWidth)+','+(node.y||defaultHeight)+')'}>
+                                    <image 
+                                        className='icon' 
+                                        width="50" 
+                                        height="50" 
+                                        xlinkHref='http://img56.ddimg.cn/73440020899646_y.jpg'
+                                    />
+                                </g>)
                             }.bind(this))
                         }
                       </g>

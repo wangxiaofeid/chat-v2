@@ -27,6 +27,8 @@ const compiler = webpack(webpackConfig)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
+app.use(Express.static(path.join(process.cwd(), 'static')));
+
 // api
 createServer(app);
 
