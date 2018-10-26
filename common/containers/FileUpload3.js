@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router";
 
-import { Form, Input, Button, Icon, Upload} from 'antd';
+import { Form, Input, Button, Icon, Upload } from "antd";
 const FormItem = Form.Item;
-import ajaxUploader from '../lib/ajaxUploader'
+import ajaxUploader from "../lib/ajaxUploader";
 
 const props = {
-  action: '/file/upload',
+  action: "/file/upload",
   multiple: false,
   beforeUpload(file) {
     // const isJPG = file.type === 'image/jpeg';
@@ -16,15 +16,15 @@ const props = {
     // }
     // return isJPG;
     // message.info('要上传文件了啦');
-    return true
+    return true;
   },
   onChange(data) {
     console.log(data);
   },
-  customRequest(obj){
+  customRequest(obj) {
     console.log(obj);
   }
-}
+};
 
 class FileUpload extends Component {
   constructor(props) {
@@ -32,26 +32,32 @@ class FileUpload extends Component {
     this.state = {
       userName: "",
       password: ""
-    }
+    };
     // console.log(this.props.params);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-    console.log('Received values of form:', this.props.form.getFieldsValue());
+    console.log("Received values of form:", this.props.form.getFieldsValue());
 
     let data = this.props.form.getFieldsValue();
     var file = data.file;
-    delete data.file
+    delete data.file;
 
     ajaxUploader({
-      action: '/file/upload',
-      filename: 'file',
-      file: Array.prototype.slice.call(document.getElementById('file').files)[0],
+      action: "/file/upload",
+      filename: "file",
+      file: Array.prototype.slice.call(
+        document.getElementById("file").files
+      )[0],
       data: data,
-      onSuccess: function(response, file){ console.log(response);},
-      onError: function(error){ console.log(error) }
+      onSuccess: function(response, file) {
+        console.log(response);
+      },
+      onError: function(error) {
+        console.log(error);
+      }
     });
   }
 
@@ -61,17 +67,13 @@ class FileUpload extends Component {
     return (
       <div>
         <Form horizontal onSubmit={this.handleSubmit}>
-          <FormItem
-            label="Account"
-          >
-            {getFieldDecorator('userName', {'initialValue': 'wxf'})(
+          <FormItem label="Account">
+            {getFieldDecorator("userName", { initialValue: "wxf" })(
               <Input placeholder="Please input the account" />
             )}
           </FormItem>
-          <FormItem
-            label="Account"
-          >
-            {getFieldDecorator('userCode', {'initialValue': 'wxf'})(
+          <FormItem label="Account">
+            {getFieldDecorator("userCode", { initialValue: "wxf" })(
               <Input placeholder="Please input the account" />
             )}
           </FormItem>
@@ -82,11 +84,13 @@ class FileUpload extends Component {
               </Button>
             </Upload>
           </FormItem>
-          <Button type="primary" htmlType="submit">Submit</Button>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form>
       </div>
-    )
+    );
   }
 }
 
-module.exports = connect()(Form.create()(FileUpload))
+module.exports = connect()(Form.create()(FileUpload));
